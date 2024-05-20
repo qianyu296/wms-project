@@ -1,4 +1,4 @@
-package com.hnkj.yfx;
+package com.hnkj;
 
 import com.hnkj.utils.JwtUtil;
 import com.hnkj.utils.ThreadLocalUtil;

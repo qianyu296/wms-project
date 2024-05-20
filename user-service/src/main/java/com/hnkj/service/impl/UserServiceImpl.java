@@ -1,11 +1,11 @@
 package com.hnkj.service.impl;
 
-import com.hnkj.dto.UserLoginDTO;
 import com.hnkj.entity.User;
 import com.hnkj.mapper.UserMapper;
 import com.hnkj.service.UserService;
 import com.hnkj.utils.JwtUtil;
 import com.hnkj.utils.ThreadLocalUtil;
+import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id",user.getId());
         claims.put("username",user.getUsername());
-        claims.put("userRole",userMapper.getUserRole(user.getId()));
         jwt = JwtUtil.genToken(claims);
         // 将jwt密钥存入VO对象当中并返回
         UserLoginVO userLoginVO = new UserLoginVO();
@@ -42,8 +41,13 @@ public class UserServiceImpl implements UserService {
         userLoginVO.setNo(user.getNo());
         // 将token放在redis中存放
         stringRedisTemplate.opsForValue().set("token",jwt);
-        ThreadLocalUtil.set(claims);
         return userLoginVO;
+    }
+
+    @Override
+    public UserInfoVO getUserInfo(Integer userId) {
+        UserInfoVO userInfo = userMapper.getUserInfo(userId);
+        return userInfo;
     }
 
 }

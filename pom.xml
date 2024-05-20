@@ -16,9 +16,10 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>pojo</module>
-    <module>server</module>
+    <module>wms-service</module>
     <module>common</module>
       <module>gateway</module>
+      <module>user-service</module>
   </modules>
 
   <properties>
