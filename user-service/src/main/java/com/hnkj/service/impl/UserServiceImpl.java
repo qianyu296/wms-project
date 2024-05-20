@@ -1,5 +1,6 @@
 package com.hnkj.service.impl;
 
+import com.hnkj.dto.ModifyPasswordDTO;
 import com.hnkj.entity.User;
 import com.hnkj.mapper.UserMapper;
 import com.hnkj.service.UserService;
@@ -46,8 +47,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfoVO getUserInfo(Integer userId) {
-        UserInfoVO userInfo = userMapper.getUserInfo(userId);
-        return userInfo;
+        return userMapper.getUserInfo(userId);
+    }
+
+    @Override
+    public Integer modifyPassword(ModifyPasswordDTO modifyPasswordDTO) {
+
+        return null;
     }
 
 }

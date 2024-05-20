@@ -15,4 +15,5 @@ public class UserInfoVO {
     private Integer age;
     private Integer sex;
     private String phone;
+    private Integer roleId;
 }

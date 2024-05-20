@@ -9,11 +9,11 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Select("select id,no,username from user where username = #{username} and status = 1")
+    @Select("select id,no,username,password from user where username = #{username} and status = 1")
     User getUser(String username);
     @Select("select menu_id from menu where role_id = #{roleId}")
     List<Integer> getUserMenu(Integer RoleId);
-    @Select("select id,no,username,age,sex,phone from user where id = #{userId} and status = 1")
+    @Select("select u.id, u.no, u.username, u.age, u.sex, u.phone, ur.role_id from user u join user_role ur on u.id = ur.user_id where u.id = 1")
     UserInfoVO getUserInfo(Integer userId);
 
 }

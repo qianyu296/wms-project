@@ -1,5 +1,7 @@
 package com.hnkj.controller;
 
+import com.hnkj.dto.AddUserDTO;
+import com.hnkj.dto.ModifyPasswordDTO;
 import com.hnkj.dto.UserLoginDTO;
 import com.hnkj.entity.User;
 import com.hnkj.result.Result;
@@ -22,6 +24,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    /**
+     * 用户登录
+     * @param userLoginDTO
+     * @return
+     *
+     * */
     @PostMapping("/login")
     public Result<UserLoginVO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
         // 首先判断DTO中的username是否存在
@@ -38,19 +46,50 @@ public class UserController {
             return Result.error("密码错误");
         }
     }
-    @GetMapping("/getRole")
-    public Result<Object> getRole(){
-        // 从redis中获取token并解密
-        String token = stringRedisTemplate.opsForValue().get("token");
-        Map<String,Object> claims = JwtUtil.parseToken(token);
-        Object roleId = claims.get("userRole");
-        return Result.success(roleId);
-    }
-
+    /**
+     * 根据userId获取用户基本信息
+     * @param userId
+     * @return
+     *
+     * */
     @GetMapping("/getUserInfo/{userId}")
     public Result<UserInfoVO> getUserInfo(@PathVariable Integer userId){
         UserInfoVO userInfo = userService.getUserInfo(userId);
         return Result.success(userInfo);
     }
-
+    /**
+     * 修改密码
+     * @param modifyPasswordDTO
+     * @return
+     *
+     * */
+    @PutMapping("/modifyPassword")
+    public Result<Object> modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO){
+        // 首先对用户输入的旧密码与新密码进行一个判断，如果不一致那么直接返回修改失败了
+        String oldPassword = modifyPasswordDTO.getOldPassword();
+        String newPassword = modifyPasswordDTO.getNewPassword();
+        if(!oldPassword.equals(newPassword)){
+            return Result.error("两次密码输入不一致！");
+        }
+        // 获取用户
+        User userInfo = userService.getUser(modifyPasswordDTO.getUsername());
+        // 判断用户输入的旧密码是否正确
+        if(!Md5Util.getMD5String(oldPassword).equals(userInfo.getPassword())){
+            return Result.error("旧密码输入错误！");
+        }
+        Integer i = userService.modifyPassword(modifyPasswordDTO);
+        if(i == 0){
+            return Result.error("修改失败，系统错误！");
+        }
+        return Result.success("修改成功！");
+    }
+    /**
+     * 超级管理员添加用户
+     *
+     *
+     * */
+    @PostMapping("/addUser")
+    public Result<Object> addUser(@RequestBody AddUserDTO addUserDTO){
+        return null;
+    }
 }
