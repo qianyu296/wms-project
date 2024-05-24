@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserVO {
     private Integer id;
-    private String no;
     private String username;
+    private String name;
     private Integer age;
     // 1为男，2为女
     private Integer sex;

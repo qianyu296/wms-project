@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserInfoVO {
     private Integer id;
-    private String no;
     private String username;
+    private String name;
     private Integer age;
     private Integer sex;
     private String phone;

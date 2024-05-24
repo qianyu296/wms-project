@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class AddUserDTO {
     private String username;
+    private String name;
     private String sex;
     private String phone;
     private String age;

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         userLoginVO.setId(user.getId());
         userLoginVO.setToken(jwt);
         userLoginVO.setUsername(user.getUsername());
-        userLoginVO.setNo(user.getNo());
+        userLoginVO.setName(user.getName());
         // 将token放在redis中存放
         stringRedisTemplate.opsForValue().set("token",jwt);
         return userLoginVO;
