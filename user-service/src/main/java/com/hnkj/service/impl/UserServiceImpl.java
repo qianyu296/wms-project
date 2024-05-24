@@ -5,14 +5,15 @@ import com.hnkj.entity.User;
 import com.hnkj.mapper.UserMapper;
 import com.hnkj.service.UserService;
 import com.hnkj.utils.JwtUtil;
-import com.hnkj.utils.ThreadLocalUtil;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
+import com.hnkj.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -54,6 +55,11 @@ public class UserServiceImpl implements UserService {
     public Integer modifyPassword(ModifyPasswordDTO modifyPasswordDTO) {
 
         return null;
+    }
+
+    @Override
+    public List<UserVO> getManagerUser() {
+        return userMapper.getManagerUser();
     }
 
 }

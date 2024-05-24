@@ -4,6 +4,9 @@ import com.hnkj.dto.ModifyPasswordDTO;
 import com.hnkj.entity.User;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
+import com.hnkj.vo.UserVO;
+
+import java.util.List;
 
 public interface UserService {
     User getUser(String username);
@@ -12,4 +15,6 @@ public interface UserService {
     UserInfoVO getUserInfo(Integer userId);
 
     Integer modifyPassword(ModifyPasswordDTO modifyPasswordDTO);
+
+    List<UserVO> getManagerUser();
 }
