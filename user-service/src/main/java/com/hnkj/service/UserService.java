@@ -1,9 +1,12 @@
 package com.hnkj.service;
 
 import com.hnkj.dto.ModifyPasswordDTO;
+import com.hnkj.dto.UserPageQueryDTO;
 import com.hnkj.entity.User;
+import com.hnkj.result.PageResult;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
+import com.hnkj.vo.UserMenuVO;
 import com.hnkj.vo.UserVO;
 
 import java.util.List;
@@ -16,5 +19,7 @@ public interface UserService {
 
     Integer modifyPassword(ModifyPasswordDTO modifyPasswordDTO);
 
-    List<UserVO> getManagerUser();
+    PageResult getManagerUser(UserPageQueryDTO userPageQueryDTO);
+
+    List<UserMenuVO> getUserMenu(Integer userRole);
 }

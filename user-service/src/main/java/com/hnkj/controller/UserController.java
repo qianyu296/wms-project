@@ -3,7 +3,9 @@ package com.hnkj.controller;
 import com.hnkj.dto.AddUserDTO;
 import com.hnkj.dto.ModifyPasswordDTO;
 import com.hnkj.dto.UserLoginDTO;
+import com.hnkj.dto.UserPageQueryDTO;
 import com.hnkj.entity.User;
+import com.hnkj.result.PageResult;
 import com.hnkj.result.Result;
 import com.hnkj.service.UserService;
 import com.hnkj.utils.JwtUtil;
@@ -11,6 +13,7 @@ import com.hnkj.utils.Md5Util;
 import com.hnkj.utils.ThreadLocalUtil;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
+import com.hnkj.vo.UserMenuVO;
 import com.hnkj.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -100,7 +103,7 @@ public class UserController {
      *
      * */
     @GetMapping("/getManagerUser")
-    public Result<List<UserVO>> getManagerUser(){
+    public Result<PageResult> getManagerUser(@RequestBody UserPageQueryDTO userPageQueryDTO){
         // 首先判断token内的权限
         String token = stringRedisTemplate.opsForValue().get("token");
         Map<String, Object> claims = JwtUtil.parseToken(token);
@@ -113,7 +116,17 @@ public class UserController {
             return Result.error("权限错误！");
         }
         // 如果是超级管理员权限，那么返回所有管理员信息
-        List<UserVO> managerUser = userService.getManagerUser();
+        PageResult managerUser = userService.getManagerUser(userPageQueryDTO);
         return Result.success(managerUser);
+    }
+    @GetMapping("/getUserMenu")
+    public Result<List<UserMenuVO>> getMenu(@RequestHeader String Authorization){
+        // 获取请求头中的token，将token解析并获取用户的权限
+        Map<String,Object> claims = JwtUtil.parseToken(Authorization);
+        Integer userId = (Integer) claims.get("id");
+        UserInfoVO userInfo = userService.getUserInfo(userId);
+        Integer userRole = userInfo.getRoleId();
+        List<UserMenuVO> userMenu = userService.getUserMenu(userRole);
+        return Result.success(userMenu);
     }
 }

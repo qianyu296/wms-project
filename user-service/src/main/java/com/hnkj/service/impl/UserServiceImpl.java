@@ -1,12 +1,17 @@
 package com.hnkj.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.hnkj.dto.ModifyPasswordDTO;
+import com.hnkj.dto.UserPageQueryDTO;
 import com.hnkj.entity.User;
 import com.hnkj.mapper.UserMapper;
+import com.hnkj.result.PageResult;
 import com.hnkj.service.UserService;
 import com.hnkj.utils.JwtUtil;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
+import com.hnkj.vo.UserMenuVO;
 import com.hnkj.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -57,8 +62,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserVO> getManagerUser() {
-        return userMapper.getManagerUser();
+    public PageResult getManagerUser(UserPageQueryDTO userPageQueryDTO) {
+        PageHelper.startPage(userPageQueryDTO.getPage(),userPageQueryDTO.getPageSize());
+        Page<UserVO> managerUser = userMapper.getManagerUser();
+        PageResult pageResult = new PageResult();
+        pageResult.setTotal(managerUser.getTotal());
+        pageResult.setRecords(managerUser.getResult());
+        return pageResult;
+    }
+
+    @Override
+    public List<UserMenuVO> getUserMenu(Integer userRole) {
+        return userMapper.getUserMenu(userRole);
     }
 
 }
