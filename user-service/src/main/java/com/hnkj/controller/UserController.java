@@ -10,15 +10,12 @@ import com.hnkj.result.Result;
 import com.hnkj.service.UserService;
 import com.hnkj.utils.JwtUtil;
 import com.hnkj.utils.Md5Util;
-import com.hnkj.utils.ThreadLocalUtil;
 import com.hnkj.vo.UserInfoVO;
 import com.hnkj.vo.UserLoginVO;
 import com.hnkj.vo.UserMenuVO;
-import com.hnkj.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +26,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+
     /**
      * 用户登录
      * @param userLoginDTO
@@ -89,36 +88,10 @@ public class UserController {
         return Result.success("修改成功！");
     }
     /**
-     * 超级管理员添加用户
-     *
-     *
+     * 获取当前用户菜单
+     * @param Authorization
+     * @return Result
      * */
-    @PostMapping("/addUser")
-    public Result<Object> addUser(@RequestBody AddUserDTO addUserDTO){
-        return null;
-    }
-
-    /**
-     * 超级管理员获取管理员信息
-     *
-     * */
-    @GetMapping("/getManagerUser")
-    public Result<PageResult> getManagerUser(@RequestBody UserPageQueryDTO userPageQueryDTO){
-        // 首先判断token内的权限
-        String token = stringRedisTemplate.opsForValue().get("token");
-        Map<String, Object> claims = JwtUtil.parseToken(token);
-        // 获取用户权限
-        Integer id = (Integer) claims.get("id");
-        UserInfoVO userInfo = userService.getUserInfo(id);
-        Integer roleId = userInfo.getRoleId();
-        // 判断用户权限是否为超级管理员，如果不是，那么返回错误信息
-        if(roleId != 0){
-            return Result.error("权限错误！");
-        }
-        // 如果是超级管理员权限，那么返回所有管理员信息
-        PageResult managerUser = userService.getManagerUser(userPageQueryDTO);
-        return Result.success(managerUser);
-    }
     @GetMapping("/getUserMenu")
     public Result<List<UserMenuVO>> getMenu(@RequestHeader String Authorization){
         // 获取请求头中的token，将token解析并获取用户的权限

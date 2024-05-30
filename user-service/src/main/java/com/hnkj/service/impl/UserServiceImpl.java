@@ -62,16 +62,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageResult getManagerUser(UserPageQueryDTO userPageQueryDTO) {
-        PageHelper.startPage(userPageQueryDTO.getPage(),userPageQueryDTO.getPageSize());
-        Page<UserVO> managerUser = userMapper.getManagerUser();
-        PageResult pageResult = new PageResult();
-        pageResult.setTotal(managerUser.getTotal());
-        pageResult.setRecords(managerUser.getResult());
-        return pageResult;
-    }
-
-    @Override
     public List<UserMenuVO> getUserMenu(Integer userRole) {
         return userMapper.getUserMenu(userRole);
     }

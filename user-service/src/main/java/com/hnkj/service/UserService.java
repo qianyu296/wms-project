@@ -19,7 +19,5 @@ public interface UserService {
 
     Integer modifyPassword(ModifyPasswordDTO modifyPasswordDTO);
 
-    PageResult getManagerUser(UserPageQueryDTO userPageQueryDTO);
-
     List<UserMenuVO> getUserMenu(Integer userRole);
 }

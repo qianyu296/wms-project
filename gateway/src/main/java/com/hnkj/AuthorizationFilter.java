@@ -27,7 +27,7 @@ public class AuthorizationFilter implements GlobalFilter {
 
         // 如果请求路径中包含login，那么直接放行
         String path = request.getPath().toString();
-        if(path.split("/wms/user/")[1].equals("login")){
+        if(path.split("/wms")[1].equals("/user/login")){
             return chain.filter(exchange);
         }
 
